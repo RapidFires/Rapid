@@ -12,7 +12,7 @@ async def on_ready():
   print("User ID:", bot.user.id)
 
 def user_is_me(ctx):
-	return ctx.message.author.id == "277983178914922497", "341933833136111617"
+	return ctx.message.author.id == "277983178914922497", "474257464368431144"
   
 @bot.command()
 async def ping():
