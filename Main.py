@@ -1,16 +1,56 @@
 import discord
 from discord.ext import commands
 import inspect
+import requests, bs4
+import youtube_dl
 import asyncio
 import os
 
 bot = commands.Bot(command_prefix = ":")
 
-@bot.event
+players = {}	
+
+@client.event 
 async def on_ready():
-  print("Logged in as")
-  print("User name:", bot.user.name)
-  print("User ID:", bot.user.id)
+	print('Logged in as')
+	print("User name:", client.user.name)
+	print("User id:", client.user.id)
+	print('---------------')
+
+@bot.event
+async def on_message(message):
+  if message.content == ':stop':
+      serverid = message.server.id
+      players[serverid].stop()
+      await bot.send_message(message.channel, "Player stopped")
+  if message.content == ':pause':
+      serverid = message.server.id
+      players[serverid].pause()
+      await bot.send_message(message.channel, "Player paused")
+  if message.content == ':resume':
+      serverid = message.server.id
+      players[serverid].resume()
+      await bot.send_message(message.channel, "Player resumed")
+  if message.content.startswith(':play '):
+      author = message.author
+      name = message.content.replace(":play ", '')                 
+      fullcontent = ('http://www.youtube.com/results?search_query=' + name)
+      text = requests.get(fullcontent).text
+      soup = bs4.BeautifulSoup(text, 'html.parser')
+      img = soup.find_all('img')
+      div = [ d for d in soup.find_all('div') if d.has_attr('class') and 'yt-lockup-dismissable' in d['class']]
+      a = [ x for x in div[0].find_all('a') if x.has_attr('title') ]
+      title = (a[0]['title'])
+      a0 = [ x for x in div[0].find_all('a') if x.has_attr('title') ][0]
+      url = ('http://www.youtube.com'+a0['href'])
+      delmsg = await bot.send_message(message.channel, 'Now Playing ** >> ' + title + '**')
+      server = message.server
+      voice_client = bot.voice_client_in(server)
+      player = await voice_client.create_ytdl_player(url)
+      players[server.id] = player
+      print("User: {} From Server: {} is playing {}".format(author, server, title))
+      player.start()
+  await bot.process_commands(message)
 
 def user_is_me(ctx):
 	return ctx.message.author.id == "277983178914922497", "474257464368431144"
@@ -18,6 +58,20 @@ def user_is_me(ctx):
 @bot.command()
 async def ping():
   await bot.say("pong!")
+
+@bot.command(pass_context=True, no_pm=True)
+async def join(ctx):
+    channel = ctx.message.author.voice.voice_channel
+    await bot.join_voice_channel(channel)
+    await bot.say('Connected to voice channel: **[' + str(channel) + ']**')
+
+@bot.command(pass_context=True, no_pm=True)
+async def leave(ctx):
+    server = ctx.message.server
+    channel = ctx.message.author.voice.voice_channel
+    voice_client = bot.voice_client_in(server)
+    await voice_client.disconnect()
+    await bot.say("Successfully disconnected from ***[{}]***".format(channel))
   
 @bot.command(name="clean", pass_context=True, no_pm=True)
 @commands.has_permissions(administrator=True)
