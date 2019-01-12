@@ -55,7 +55,7 @@ async def on_message(message):
   await bot.process_commands(message)
 
 def user_is_me(ctx):
-	return ctx.message.author.id == "277983178914922497", "474257464368431144"
+	return ctx.message.author.id == "474257464368431144"
   
 @bot.command()
 async def ping():
