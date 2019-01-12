@@ -5,6 +5,7 @@ import requests, bs4
 import youtube_dl
 import asyncio
 import os
+from discord import opus
 
 bot = commands.Bot(command_prefix = ":")
 bot.remove_command("help")
