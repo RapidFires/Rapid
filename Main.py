@@ -192,6 +192,13 @@ async def help(ctx):
 	embed.add_field(name=":leave", value="make the bot leave the voice channel")
 	embed.add_field(name=":play", value="please be careful when using this command it will break if theres music playing.")
 	embed.add_field(name=":stop", value="to stop the music from playing")
+	embed.add_field(name=":warn", value=":warn @user <reason>")
+	embed.add_field(name="mute", value=":mute @user <reason>")
+	embed.add_field(name=":unmute", value=":unmute @user <reason>")
+	embed.add_field(name=":kick", value=":kick @user <reason>")
+	embed.add_field(name=":ban", value=":ban @user <reason>")
+	embed.add_field(name=":unban", value=":unban <user id>")
+	embed.add_field(name=":clean", value=":clean <amount of messages>")
 	embed.add_field(name=":ping", value="test to see the bot is online or not")
 	await bot.say(embed=embed)
   
