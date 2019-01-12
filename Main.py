@@ -10,11 +10,11 @@ bot = commands.Bot(command_prefix = ":")
 
 players = {}	
 
-@client.event 
+@bot.event 
 async def on_ready():
 	print('Logged in as')
-	print("User name:", client.user.name)
-	print("User id:", client.user.id)
+	print("User name:", bot.user.name)
+	print("User id:", bot.user.id)
 	print('---------------')
 
 @bot.event
@@ -182,5 +182,15 @@ async def _eval(ctx, *, command):
         await bot.say(await res)
     else:
     	await bot.say(res)
+	
+@bot.command(pass_context=True, no_pm=True)
+async def help(ctx):
+	embed = discord.Embed(title="Help section", description=" ", color=0xFFFF)
+	embed.add_field(name=":join", value="make the bot join voice channel")
+	embed.add_field(name=":leave", value="make the bot leave the voice channel")
+	embed.add_field(name=":play", value="please be careful when using this command it will break if theres music playing.")
+	embed.add_field(name=":stop", value="to stop the music from playing")
+	embed.add_field(name=":ping", value="test to see the bot is online or not")
+	await bot.say(embed=embed)
   
 bot.run(os.environ['BOT_TOKEN'])
