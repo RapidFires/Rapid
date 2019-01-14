@@ -7,7 +7,7 @@ import asyncio
 import os
 from discord import opus
 
-bot = commands.Bot(command_prefix = ":")
+bot = commands.Bot(command_prefix = "+")
 bot.remove_command("help")
 
 players = {}	
