@@ -21,21 +21,21 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-  if message.content == ':stop':
+  if message.content == '+stop':
       serverid = message.server.id
       players[serverid].stop()
       await bot.send_message(message.channel, "Player stopped")
-  if message.content == ':pause':
+  if message.content == '+pause':
       serverid = message.server.id
       players[serverid].pause()
       await bot.send_message(message.channel, "Player paused")
-  if message.content == ':resume':
+  if message.content == '+resume':
       serverid = message.server.id
       players[serverid].resume()
       await bot.send_message(message.channel, "Player resumed")
-  if message.content.startswith(':play '):
+  if message.content.startswith('+play '):
       author = message.author
-      name = message.content.replace(":play ", '')                 
+      name = message.content.replace("+play ", '')                 
       fullcontent = ('http://www.youtube.com/results?search_query=' + name)
       text = requests.get(fullcontent).text
       soup = bs4.BeautifulSoup(text, 'html.parser')
@@ -89,7 +89,7 @@ async def _clean(ctx, amount=100):
 
 @bot.command(pass_context=True)
 @commands.has_permissions(kick_members=True, administrator=True)
-async def mute(ctx, user: discord.Member, *, arg):
+async def mute(ctx, user: discord.Member, *, arg = None):
 	if arg is None:
 			await bot.say("please provide a reason to {}".format(user.name))
 			return False
@@ -105,7 +105,7 @@ async def mute(ctx, user: discord.Member, *, arg):
 
 @bot.command(pass_context=True)
 @commands.has_permissions(kick_members=True, administrator=True)
-async def unmute(ctx, user: discord.Member, *, arg):
+async def unmute(ctx, user: discord.Member, *, arg = None):
 	if arg is None:
 			await bot.say("please provide a reason to {}".format(user.name))
 			return False
@@ -121,7 +121,7 @@ async def unmute(ctx, user: discord.Member, *, arg):
 
 @bot.command(pass_context=True)
 @commands.has_permissions(kick_members=True)
-async def kick(ctx, user: discord.Member, *, arg):
+async def kick(ctx, user: discord.Member, *, arg = None):
 	if arg is None:
 			await bot.say("please provide a reason to {}".format(user.name))
 			return False
@@ -136,7 +136,7 @@ async def kick(ctx, user: discord.Member, *, arg):
   
 @bot.command(pass_context=True)
 @commands.has_permissions(ban_members=True)
-async def ban(ctx, user: discord.Member, *, arg):
+async def ban(ctx, user: discord.Member, *, arg = None):
 	if arg is None:
 			await bot.say("please provide a reason to {}".format(user.name))
 			return False
@@ -200,18 +200,18 @@ async def _eval(ctx, *, command):
 @bot.command(pass_context=True, no_pm=True)
 async def help(ctx):
 	embed = discord.Embed(title="Help section", description=" ", color=0xFFFF)
-	embed.add_field(name=":join", value="make the bot join voice channel")
-	embed.add_field(name=":leave", value="make the bot leave the voice channel")
-	embed.add_field(name=":play", value="please be careful when using this command it will break if theres music playing.")
-	embed.add_field(name=":stop", value="to stop the music from playing")
-	embed.add_field(name=":warn", value=":warn @user <reason>")
-	embed.add_field(name=":mute", value=":mute @user <reason>")
-	embed.add_field(name=":unmute", value=":unmute @user <reason>")
-	embed.add_field(name=":kick", value=":kick @user <reason>")
-	embed.add_field(name=":ban", value=":ban @user <reason>")
-	embed.add_field(name=":unban", value=":unban <user id>")
-	embed.add_field(name=":clean", value=":clean <amount of messages>")
-	embed.add_field(name=":ping", value="test to see the bot is online or not")
+	embed.add_field(name="+join", value="make the bot join voice channel")
+	embed.add_field(name="+leave", value="make the bot leave the voice channel")
+	embed.add_field(name="+play", value="please be careful when using this command it will break if theres music playing.")
+	embed.add_field(name="+stop", value="to stop the music from playing")
+	embed.add_field(name="+warn", value="+warn @user <reason>")
+	embed.add_field(name="+mute", value="+mute @user <reason>")
+	embed.add_field(name="+unmute", value="+unmute @user <reason>")
+	embed.add_field(name="+kick", value="+kick @user <reason>")
+	embed.add_field(name="+ban", value="+ban @user <reason>")
+	embed.add_field(name="+unban", value="+unban <user id>")
+	embed.add_field(name="+clean", value="+clean <amount of messages>")
+	embed.add_field(name="+ping", value="test to see the bot is online or not")
 	await bot.say(embed=embed)
   
 bot.run(os.environ['BOT_TOKEN'])
