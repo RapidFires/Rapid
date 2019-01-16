@@ -52,7 +52,7 @@ async def on_message(message):
       players[server.id] = player
       print("User: {} From Server: {} is playing {}".format(author, server, title))
       player.start()
-  if message.content.startswith('.restart'):
+  if message.content.startswith('+restart'):
 	await asyncio.sleep(5)
         await bot.send_message(message.channel, "🔄 Restarting Bot...".format(message))
         await asyncio.sleep(8)
