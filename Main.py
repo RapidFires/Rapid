@@ -52,6 +52,19 @@ async def on_message(message):
       players[server.id] = player
       print("User: {} From Server: {} is playing {}".format(author, server, title))
       player.start()
+  if message.content.startswith('.restart'):
+	await asyncio.sleep(5)
+        await bot.send_message(message.channel, "🔄 Restarting Bot...".format(message))
+        await asyncio.sleep(8)
+        await bot.send_message(message.channel, "🔄 Updating OS...".format(message))
+        await asyncio.sleep(5)
+        await bot.send_message(message.channel, "🔄 Updating Commands...".format(message))
+        await asyncio.sleep(5)
+        await bot.send_message(message.channel, "🔄 Removing Streaming...".format(message))
+        await asyncio.sleep(5)
+        await bot.send_message(message.channel, "🔄 Confirming System...".format(message))
+        await asyncio.sleep(7)
+	await bot.send_message(message.channel, "✅ Bot Successfully Restarted".format(message))
   await bot.process_commands(message)
 
 def user_is_me(ctx):
