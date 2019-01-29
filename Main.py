@@ -1,10 +1,11 @@
 import discord
 from discord.ext import commands
-import inspect
-import requests, bs4
-import youtube_dl
 import asyncio
+import requests, bs4
 import os
+import youtube_dl
+import inspect
+import datetime
 from discord import opus
 
 bot = commands.Bot(command_prefix = "+")
@@ -21,38 +22,38 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-  if message.content == '+stop':
-      serverid = message.server.id
-      players[serverid].stop()
-      await bot.send_message(message.channel, "Player stopped")
-  if message.content == '+pause':
-      serverid = message.server.id
-      players[serverid].pause()
-      await bot.send_message(message.channel, "Player paused")
-  if message.content == '+resume':
-      serverid = message.server.id
-      players[serverid].resume()
-      await bot.send_message(message.channel, "Player resumed")
-  if message.content.startswith('+play '):
-      author = message.author
-      name = message.content.replace("+play ", '')                 
-      fullcontent = ('http://www.youtube.com/results?search_query=' + name)
-      text = requests.get(fullcontent).text
-      soup = bs4.BeautifulSoup(text, 'html.parser')
-      img = soup.find_all('img')
-      div = [ d for d in soup.find_all('div') if d.has_attr('class') and 'yt-lockup-dismissable' in d['class']]
-      a = [ x for x in div[0].find_all('a') if x.has_attr('title') ]
-      title = (a[0]['title'])
-      a0 = [ x for x in div[0].find_all('a') if x.has_attr('title') ][0]
-      url = ('http://www.youtube.com'+a0['href'])
-      delmsg = await bot.send_message(message.channel, 'Now Playing ** >> ' + title + '**')
-      server = message.server
-      voice_client = bot.voice_client_in(server)
-      player = await voice_client.create_ytdl_player(url)
-      players[server.id] = player
-      print("User: {} From Server: {} is playing {}".format(author, server, title))
-      player.start()
-  await bot.process_commands(message)
+	if message.content == '+stop':
+		serverid = message.server.id
+		players[serverid].stop()
+		await bot.send_message(message.channel, "Player stopped")
+	if message.content == '+pause':
+		serverid = message.server.id
+		players[serverid].pause()
+		await bot.send_message(message.channel, "Player paused")
+	if message.content == '+resume':
+		serverid = message.server.id
+		players[serverid].resume()
+		await bot.send_message(message.channel, "Player resumed")
+	if message.content.startswith('+play '):
+		author = message.author
+		name = message.content.replace("+play ", '')                 
+		fullcontent = ('http://www.youtube.com/results?search_query=' + name)
+		text = requests.get(fullcontent).text
+		soup = bs4.BeautifulSoup(text, 'html.parser')
+		img = soup.find_all('img')
+		div = [ d for d in soup.find_all('div') if d.has_attr('class') and 'yt-lockup-dismissable' in d['class']]
+		a = [ x for x in div[0].find_all('a') if x.has_attr('title') ]
+		title = (a[0]['title'])
+		a0 = [ x for x in div[0].find_all('a') if x.has_attr('title') ][0]
+		url = ('http://www.youtube.com'+a0['href'])
+		delmsg = await bot.send_message(message.channel, 'Now Playing ** >> ' + title + '**')
+		server = message.server
+		voice_client = bot.voice_client_in(server)
+		player = await voice_client.create_ytdl_player(url)
+		players[server.id] = player
+		print("User: {} From Server: {} is playing {}".format(author, server, title))
+		player.start()
+	await bot.process_commands(message)
 
 def user_is_me(ctx):
 	return ctx.message.author.id == "474257464368431144"
