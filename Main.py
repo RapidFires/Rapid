@@ -60,40 +60,40 @@ def user_is_me(ctx):
   
 @bot.command()
 async def ping():
-  await bot.say("pong!")
+	await bot.say("pong!")
 
 @bot.command(pass_context=True, no_pm=True)
 async def join(ctx):
-    channel = ctx.message.author.voice.voice_channel
-    await bot.join_voice_channel(channel)
-    await bot.say('Connected to voice channel: **[' + str(channel) + ']**')
+	channel = ctx.message.author.voice.voice_channel
+	await bot.join_voice_channel(channel)
+	await bot.say('Connected to voice channel: **[' + str(channel) + ']**')
 
 @bot.command(pass_context=True, no_pm=True)
 async def leave(ctx):
-    server = ctx.message.server
-    channel = ctx.message.author.voice.voice_channel
-    voice_client = bot.voice_client_in(server)
-    await voice_client.disconnect()
-    await bot.say("Successfully disconnected from ***[{}]***".format(channel))
+	server = ctx.message.server
+	channel = ctx.message.author.voice.voice_channel
+	voice_client = bot.voice_client_in(server)
+	await voice_client.disconnect()
+	await bot.say("Successfully disconnected from ***[{}]***".format(channel))
   
 @bot.command(name="clean", pass_context=True, no_pm=True)
 @commands.has_permissions(administrator=True)
 async def _clean(ctx, amount=100):
-    channel = ctx.message.channel
-    messages = [ ]
-    async for message in bot.logs_from(channel, limit=int(amount) + 1):
-        messages.append(message)
-    await bot.delete_messages(messages)
-    msg = await bot.say(f"{amount} message has been deleted.")
-    await asyncio.sleep(5)
-    await bot.delete_message(msg)
+	channel = ctx.message.channel
+	messages = [ ]
+	async for message in bot.logs_from(channel, limit=int(amount) + 1):
+		messages.append(message)
+	await bot.delete_messages(messages)
+	msg = await bot.say(f"{amount} message has been deleted.")
+	await asyncio.sleep(5)
+	await bot.delete_message(msg)
 
 @bot.command(pass_context=True)
 @commands.has_permissions(kick_members=True, administrator=True)
 async def mute(ctx, user: discord.Member, *, arg = None):
 	if arg is None:
-			await bot.say("please provide a reason to {}".format(user.name))
-			return False
+		await bot.say("please provide a reason to {}".format(user.name))
+		return False
 	reason = arg
 	author = ctx.message.author
 	role = discord.utils.get(ctx.message.server.roles, name="Muted")
