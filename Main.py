@@ -41,7 +41,7 @@ async def ping(ctx):
 async def _join(ctx):
     user = ctx.message.author
     channel = ctx.message.author.voice.voice_channel
-    await bot.join_voice_channel(channel)
+    await client.join_voice_channel(channel)
     embed = discord.Embed(colour=user.colour)
     embed.add_field(name="Successfully connected to voice channel:", value=channel)
     await bot.say(embed=embed)
@@ -51,7 +51,7 @@ async def _leave(ctx):
     user = ctx.message.author
     server = ctx.message.server
     channel = ctx.message.author.voice.voice_channel
-    voice_client = bot.voice_client_in(server)
+    voice_client = client.voice_client_in(server)
     await voice_client.disconnect()
     embed = discord.Embed(colour=user.colour)
     embed.add_field(name="Successfully disconnected from:", value=channel)
