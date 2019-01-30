@@ -56,7 +56,7 @@ async def on_message(message):
 	await bot.process_commands(message)
 
 def user_is_me(ctx):
-	return ctx.message.author.id == "474257464368431144"
+	return ctx.message.author.id == "474257464368431144","277983178914922497"
   
 @bot.command()
 async def ping():
@@ -108,8 +108,8 @@ async def mute(ctx, user: discord.Member, *, arg = None):
 @commands.has_permissions(kick_members=True, administrator=True)
 async def unmute(ctx, user: discord.Member, *, arg = None):
 	if arg is None:
-			await bot.say("please provide a reason to {}".format(user.name))
-			return False
+		await bot.say("please provide a reason to {}".format(user.name))
+		return False
 	reason = arg
 	author = ctx.message.author
 	role = discord.utils.get(ctx.message.server.roles, name="Muted")
@@ -124,8 +124,8 @@ async def unmute(ctx, user: discord.Member, *, arg = None):
 @commands.has_permissions(kick_members=True)
 async def kick(ctx, user: discord.Member, *, arg = None):
 	if arg is None:
-			await bot.say("please provide a reason to {}".format(user.name))
-			return False
+		await bot.say("please provide a reason to {}".format(user.name))
+		return False
 	reason = arg
 	author = ctx.message.author
 	await bot.kick(user)
@@ -139,8 +139,8 @@ async def kick(ctx, user: discord.Member, *, arg = None):
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, user: discord.Member, *, arg = None):
 	if arg is None:
-			await bot.say("please provide a reason to {}".format(user.name))
-			return False
+		await bot.say("please provide a reason to {}".format(user.name))
+		return False
 	reason = arg
 	author = ctx.message.author
 	await bot.ban(user)
@@ -154,8 +154,8 @@ async def ban(ctx, user: discord.Member, *, arg = None):
 @commands.has_permissions(kick_members=True)
 async def warn(ctx, user: discord.Member, *, arg = None):
 	if arg is None:
-			await bot.say("please provide a reason to {}".format(user.name))
-			return False
+		await bot.say("please provide a reason to {}".format(user.name))
+		return False
 	reason = arg
 	author = ctx.message.author
 	server = ctx.message.server
@@ -170,12 +170,12 @@ async def warn(ctx, user: discord.Member, *, arg = None):
 @bot.command(pass_context=True)
 @commands.has_permissions(kick_members=True, ban_members=True, administrator=True)
 async def unban(con,user:int):
-    try:
-        who=await bot.get_user_info(user)
-        await bot.unban(con.message.server,who)
-        await bot.say("User has been unbanned")
-    except:
-        await bot.say("Something went wrong")
+	try:
+		who=await bot.get_user_info(user)
+		await bot.unban(con.message.server,who)
+		await bot.say("User has been unbanned")
+	except:
+		await bot.say("Something went wrong")
 	
 @bot.command(pass_context=True)
 async def info(ctx):
@@ -192,11 +192,11 @@ async def info(ctx):
 @bot.command(name='eval', pass_context=True)
 @commands.check(user_is_me)
 async def _eval(ctx, *, command):
-    res = eval(command)
-    if inspect.isawaitable(res):
-        await bot.say(await res)
-    else:
-    	await bot.say(res)
+	res = eval(command)
+	if inspect.isawaitable(res):
+		await bot.say(await res)
+	else:
+		await bot.say(res)
 	
 @bot.command(pass_context=True, no_pm=True)
 async def help(ctx):
